@@ -13,6 +13,13 @@ export default class PreloaderScene extends Phaser.Scene {
     }
 
     preload() {
+        // Time event for logo
+        this.timedEvent = this.time.delayedCall(1000, this.ready, [], this);
+        this.createPreloader();
+        this.loadAssets();
+    }
+
+    createPreloader() {
         const width = this.cameras.main.width;
         const height = this.cameras.main.height;
 
@@ -77,18 +84,17 @@ export default class PreloaderScene extends Phaser.Scene {
         });
 
         // Remove progress bar when complete
-        this.load.on('complete', function() {
+        this.load.on('complete', () => {
             progressBox.destroy();
             progressBar.destroy();
             assetText.destroy();
             loadingText.destroy();
             porcentText.destroy();
             this.ready();
-        }.bind(this));
+        });
+    }
 
-        // Time event for logo
-        this.timedEvent = this.time.delayedCall(1500, this.ready, [], this);
-
+    loadAssets() {
         // Load assets needed in our game
         this.load.image('bullet', '/src/assets/level/bulletDark2_outline.png');
         this.load.image('tower', '/src/assets/level/tank_bigRed.png');
@@ -120,6 +126,7 @@ export default class PreloaderScene extends Phaser.Scene {
         auqnue sea un rato antes de entrar al juego */
         this.readyCount ++;
         if(this.readyCount === 2) {
+            // this.scene.start('Title');
             this.scene.start('Game');
         }
     }
