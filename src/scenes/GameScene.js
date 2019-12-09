@@ -17,6 +17,15 @@ export default class GameScene extends Phaser.Scene {
             return arr.slice();
         });
         this.nextEnemy = 0;
+        this.score = 0;
+        this.baseHealth = 2;
+
+        /* Al momento de que la Scene está cargada manda un evento
+        que puede ser escuchado en otros Scenes. En este caso va a 
+        ser escuchado por la de UI para activarla. */
+        this.events.emit('displayUI');
+        this.events.emit('updateHealth', this.baseHealth);
+        this.events.emit('updateScore', this.score);
     }
 
     create() {
@@ -49,6 +58,21 @@ export default class GameScene extends Phaser.Scene {
                 // Next enemy will apear in the next time
                 this.nextEnemy = time + 2000;
             }
+        }
+    }
+
+    updateScore(score) {
+        this.score += score;
+        this.events.emit('updateScore', this.score);
+    }
+
+    updateHealth(health) {
+        this.baseHealth -= health;
+        this.events.emit('updateHealth', this.baseHealth);
+
+        if (this.baseHealth <= 0) {
+            this.events.emit('hideUI');
+            this.scene.start('Title');
         }
     }
 

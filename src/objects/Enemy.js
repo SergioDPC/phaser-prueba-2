@@ -43,7 +43,8 @@ export default class Enemy extends Phaser.GameObjects.Image {
         if(this.follower.t >= 1) {
             this.setActive(false);
             this.setVisible(false);
-            // TODO: update player health
+            // Baja la vida al jugador
+            this.scene.updateHealth(1);
         }
     }
 
@@ -72,7 +73,7 @@ export default class Enemy extends Phaser.GameObjects.Image {
         if(this.hp <= 0) {
             this.setActive(false);
             this.setVisible(false);
-            // TODO: update the score
+            this.scene.updateScore(10);
         }
     }
 }
